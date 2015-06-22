@@ -1,0 +1,43 @@
+#cloud-config
+coreos:
+  etcd2:
+    # generate a new token for each unique cluster from https://discovery.etcd.io/new?size=3
+    # use the generated token value with the command "mvn generate-resources -Detcd.token=YOUR_VALUE"
+    # to generate valid cloud config under target
+    discovery: https://discovery.etcd.io/${etcd.token}
+    # multi-region and multi-cloud deployments need to use $public_ipv4
+    advertise-client-urls: http://$private_ipv4:2379,http://$private_ipv4:4001
+    initial-advertise-peer-urls: http://$private_ipv4:2380,http://$private_ipv4:7001
+    # listen on the official ports
+    listen-client-urls: http://0.0.0.0:2379
+    listen-peer-urls: http://$private_ipv4:2380
+  units:
+    # Mount an external volume for Docker using the volume host specific id
+    # Use: -Dstorage.id.prefix=".." -Dstorage.id.postfix=".." to create the correct id
+    - name: var-lib-docker.mount
+      command: start
+      content: |
+        [Unit]
+        Description=Mount storage to /var/lib/docker
+        Before=docker.service
+        [Mount]
+        What=/dev/disk/by-id/${storage.id.prefix}2${storage.id.postfix}
+        Where=/var/lib/docker
+        Type=ext4
+    - name: etcd2.service
+      command: start
+    - name: fleet.service
+      command: start
+write_files:
+  - path: /etc/systemd/system/docker.service.d/increase-ulimit.conf
+    owner: core:core
+    permissions: 0644
+    content: |
+      [Service]
+      LimitMEMLOCK=infinity
+  - path: /etc/profile.d/host.sh
+    permissions: 0644
+    owner: core
+    content: |
+      # configure HOST_ID environment variable
+      export HOST_ID="2"
