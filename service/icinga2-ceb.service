@@ -1,0 +1,18 @@
+[Unit]
+Description=Icinga2 Command Execution Bridge
+After=docker.service
+Requires=docker.service
+
+[Service]
+TimeoutStartSec=0
+ExecStartPre=-/usr/bin/docker kill icinga2-ceb
+ExecStartPre=-/usr/bin/docker rm -f icinga2-ceb
+ExecStartPre=/usr/bin/docker pull extendedmind/icinga2-ceb:latest
+ExecStart=/usr/bin/docker run --privileged -p 5665:5665 --name icinga2-ceb --volumes-from DATA-ICINGA2 extendedmind/icinga2-ceb:latest
+
+[Install]
+WantedBy=multi-user.target
+
+[X-Fleet]
+Global=true
+MachineMetadata=role=node
