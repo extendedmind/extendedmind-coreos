@@ -1,0 +1,29 @@
+[Unit]
+Description=Confd
+After=docker.service
+After=mongodb-conf.service
+After=backend-conf.service
+After=nginx-conf.service
+Requires=docker.service
+Requires=mongodb-conf.service
+Requires=backend-conf.service
+Requires=nginx-conf.service
+
+[Service]
+EnvironmentFile=/etc/environment
+EnvironmentFile=/etc/metadata
+TimeoutStartSec=0
+Type=oneshot
+RemainAfterExit=true
+ExecStartPre=-/usr/bin/docker rm confd
+ExecStartPre=/usr/bin/docker pull extendedmind/confd:latest
+ExecStart=/usr/bin/docker run -e HOST_ID=${HOST_ID} --name confd \
+--volumes-from CONF-MONGODB --volumes-from CONF-BACKEND --volumes-from CONF-NGINX \
+extendedmind/confd:latest -onetime=true -node=http://${COREOS_PRIVATE_IPV4}:2379
+
+[Install]
+WantedBy=multi-user.target
+
+[X-Fleet]
+Global=true
+MachineMetadata=role=node

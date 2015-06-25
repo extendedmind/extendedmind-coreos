@@ -1,0 +1,19 @@
+[Unit]
+Description=Extended Mind Backend Configuration Templates
+After=docker.service
+Requires=docker.service
+
+[Service]
+TimeoutStartSec=0
+Type=oneshot
+RemainAfterExit=true
+ExecStartPre=-/usr/bin/docker rm CONF-BACKEND
+ExecStartPre=/usr/bin/docker pull extendedmind/backend-conf:latest
+ExecStart=/usr/bin/docker create --name CONF-BACKEND extendedmind/backend-conf:latest
+
+[Install]
+WantedBy=multi-user.target
+
+[X-Fleet]
+Global=true
+MachineMetadata=role=node

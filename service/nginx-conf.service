@@ -1,0 +1,19 @@
+[Unit]
+Description=Nginx Configuration Templates
+After=docker.service
+Requires=docker.service
+
+[Service]
+TimeoutStartSec=0
+Type=oneshot
+RemainAfterExit=true
+ExecStartPre=-/usr/bin/docker rm CONF-NGINX
+ExecStartPre=/usr/bin/docker pull extendedmind/nginx-conf:latest
+ExecStart=/usr/bin/docker create --name CONF-NGINX extendedmind/nginx-conf:latest
+
+[Install]
+WantedBy=multi-user.target
+
+[X-Fleet]
+Global=true
+MachineMetadata=role=node

@@ -37,9 +37,8 @@ write_files:
     content: |
       [Service]
       LimitMEMLOCK=infinity
-  - path: /etc/profile.d/host.sh
+  - path: /etc/metadata
     permissions: 0644
     owner: core
     content: |
-      # configure HOST_ID environment variable
-      export HOST_ID="1"
+      HOST_ID=1
