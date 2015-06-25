@@ -18,7 +18,7 @@ RemainAfterExit=true
 ExecStartPre=-/usr/bin/docker rm confd
 ExecStartPre=/usr/bin/docker pull extendedmind/confd:latest
 ExecStart=/usr/bin/docker run -e HOST_ID=${HOST_ID} --name confd \
---volumes-from CONF-MONGODB --volumes-from CONF-BACKEND --volumes-from CONF-NGINX \
+--volumes-from CONF-MONGODB --volumes-from CONF-BACKEND --volumes-from CONF-NGINX --volumes-from CONF-CUBE \
 extendedmind/confd:latest -onetime=true -node=http://${COREOS_PRIVATE_IPV4}:2379
 
 [Install]

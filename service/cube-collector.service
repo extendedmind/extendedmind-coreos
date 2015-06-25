@@ -1,0 +1,21 @@
+[Unit]
+Description=Cube Collector
+After=docker.service
+After=mongodb.service
+Requires=docker.service
+Requires=mongodb.service
+
+[Service]
+TimeoutStartSec=0
+ExecStartPre=-/usr/bin/docker rm cube-collector
+ExecStartPre=/usr/bin/docker pull extendedmind/cube-collector:latest
+ExecStart=/usr/bin/docker run --name cube-collector \
+--volumes-from CONF-CUBE \
+extendedmind/cube-collector:latest
+
+[Install]
+WantedBy=multi-user.target
+
+[X-Fleet]
+Global=true
+MachineMetadata=role=node

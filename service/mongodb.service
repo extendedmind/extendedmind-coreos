@@ -10,7 +10,7 @@ TimeoutStartSec=0
 ExecStartPre=-/usr/bin/docker rm mongodb
 ExecStartPre=/usr/bin/docker pull extendedmind/mongodb:latest
 ExecStart=/usr/bin/docker run --name mongodb \
---volumes-from CONF-MONGODB --volumes-from DATA-MONGODB \
+--volumes-from CONF-MONGODB --volumes-from DATA-MONGODB -p 27017:27017 \
 extendedmind/mongodb:latest
 
 [Install]

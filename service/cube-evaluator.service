@@ -1,0 +1,21 @@
+[Unit]
+Description=Cube Evaluator
+After=docker.service
+After=mongodb.service
+Requires=docker.service
+Requires=mongodb.service
+
+[Service]
+TimeoutStartSec=0
+ExecStartPre=-/usr/bin/docker rm cube-evaluator
+ExecStartPre=/usr/bin/docker pull extendedmind/cube-evaluator:latest
+ExecStart=/usr/bin/docker run --name cube-evaluator \
+--volumes-from CONF-CUBE \
+extendedmind/cube-evaluator:latest
+
+[Install]
+WantedBy=multi-user.target
+
+[X-Fleet]
+Global=true
+MachineMetadata=role=node
