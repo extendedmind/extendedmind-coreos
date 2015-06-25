@@ -1,0 +1,21 @@
+[Unit]
+Description=MongoDB
+After=docker.service
+After=confd.service
+Requires=docker.service
+Requires=confd.service
+
+[Service]
+TimeoutStartSec=0
+ExecStartPre=-/usr/bin/docker rm mongodb
+ExecStartPre=/usr/bin/docker pull extendedmind/mongodb:latest
+ExecStart=/usr/bin/docker run --name mongodb \
+--volumes-from CONF-MONGODB --volumes-from DATA-MONGODB \
+extendedmind/mongodb:latest
+
+[Install]
+WantedBy=multi-user.target
+
+[X-Fleet]
+Global=true
+MachineMetadata=role=node
