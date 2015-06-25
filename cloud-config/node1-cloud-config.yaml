@@ -42,3 +42,4 @@ write_files:
     owner: core
     content: |
       HOST_ID=1
+      BUCKET_PATH=${bucket.path}
