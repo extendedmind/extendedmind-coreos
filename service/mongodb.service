@@ -1,11 +1,14 @@
 [Unit]
 Description=MongoDB
 After=docker.service
+After=flanneld.service
 After=confd.service
 Requires=docker.service
+Requires=flanneld.service
 Requires=confd.service
 
 [Service]
+Restart=always|on-failure
 TimeoutStartSec=0
 ExecStartPre=-/usr/bin/docker rm mongodb
 ExecStartPre=/usr/bin/docker pull extendedmind/mongodb:latest
