@@ -30,6 +30,14 @@ coreos:
       command: start
     - name: fleet.service
       command: start
+    - name: flanneld.service
+      drop-ins:
+        - name: 50-network-config.conf
+          content: |
+            [Service]
+            ExecStartPre=/usr/bin/etcdctl set /coreos.com/network/config '{ "Network": "10.1.0.0/16" }'
+      command: start
+
 write_files:
   - path: /etc/systemd/system/docker.service.d/increase-ulimit.conf
     owner: core:core
