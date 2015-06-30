@@ -9,7 +9,7 @@ Requires=backend.service
 
 [Service]
 EnvironmentFile=/etc/metadata
-Restart=always|on-failure
+Restart=on-failure
 TimeoutStartSec=0
 ExecStartPre=-/usr/bin/docker rm backend-backup
 ExecStartPre=/usr/bin/docker pull extendedmind/backend-backup:latest

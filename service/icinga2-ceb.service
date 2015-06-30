@@ -6,7 +6,7 @@ Requires=docker.service
 Requires=flanneld.service
 
 [Service]
-Restart=always|on-failure
+Restart=on-failure
 TimeoutStartSec=0
 ExecStartPre=-/usr/bin/docker kill icinga2-ceb
 ExecStartPre=-/usr/bin/docker rm -f icinga2-ceb

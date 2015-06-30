@@ -14,7 +14,7 @@ Requires=nginx-conf.service
 Requires=cube-conf.service
 
 [Service]
-Restart=always|on-failure
+Restart=on-failure
 EnvironmentFile=/etc/environment
 EnvironmentFile=/etc/metadata
 TimeoutStartSec=0

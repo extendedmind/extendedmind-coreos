@@ -8,7 +8,7 @@ Requires=flanneld.service
 Requires=confd.service
 
 [Service]
-Restart=always|on-failure
+Restart=on-failure
 EnvironmentFile=/etc/environment
 TimeoutStartSec=0
 ExecStartPre=-/usr/bin/docker rm backend
@@ -16,6 +16,7 @@ ExecStartPre=/usr/bin/docker pull extendedmind/backend:latest
 ExecStart=/usr/bin/docker run --name backend \
 --volumes-from CONF-BACKEND --volumes-from DATA-BACKEND -p 6362:6362 -p 8081:8081 \
 extendedmind/backend:latest
+ExecStop=/bin/bash -c "/usr/bin/curl -X POST localhost:8081/shutdown && sleep 5"
 
 [Install]
 WantedBy=multi-user.target
