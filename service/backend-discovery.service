@@ -6,7 +6,7 @@ After=backend.service
 [Service]
 EnvironmentFile=/etc/environment
 ExecStart=/bin/bash -c "while ! IP=$(docker inspect -f '{{.NetworkSettings.IPAddress}}' backend) && [ -n \"$IP\" ]; do sleep 1; done; while true; do etcdctl set /extendedmind/backend/hosts/${COREOS_PRIVATE_IPV4} \"$IP\" --ttl 60; sleep 45; done"
-ExecStop=/usr/bin/etcdctl rm /extendedmind/backend/hosts/${COREOS_PRIVATE_IPV4}
+ExecStop=/usr/bin/etcdctl rm /extendedmind/backend/hosts/${COREOS_PRIVATE_IPV4} || true
 
 [Install]
 WantedBy=multi-user.target
