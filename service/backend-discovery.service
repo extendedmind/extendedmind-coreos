@@ -4,8 +4,9 @@ BindsTo=backend.service
 After=backend.service
 
 [Service]
-TimeoutStartSec=1
+TimeoutStartSec=0
 EnvironmentFile=/etc/environment
+ExecStartPre=/bin/bash -c "sleep 1"
 ExecStart=/bin/bash -c "while [ -z \"$(docker inspect -f '{{.NetworkSettings.IPAddress}}' backend)\" ]; do sleep 1; done; while true; do etcdctl set /extendedmind/backend/hosts/${COREOS_PRIVATE_IPV4} \"$(docker inspect -f '{{.NetworkSettings.IPAddress}}' backend)\" --ttl 60; sleep 45; done"
 ExecStop=/usr/bin/etcdctl rm /extendedmind/backend/hosts/${COREOS_PRIVATE_IPV4} || true
 
