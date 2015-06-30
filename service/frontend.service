@@ -1,0 +1,21 @@
+[Unit]
+Description=Extended Mind Frontend
+After=docker.service
+After=flanneld.service
+Requires=docker.service
+Requires=flanneld.service
+
+[Service]
+TimeoutStartSec=0
+Type=oneshot
+RemainAfterExit=true
+ExecStartPre=-/usr/bin/docker rm frontend
+ExecStartPre=/usr/bin/docker pull extendedmind/frontend:latest
+ExecStart=/usr/bin/docker run --name frontend --volumes-from DATA-FRONTEND extendedmind/frontend:latest
+
+[Install]
+WantedBy=multi-user.target
+
+[X-Fleet]
+Global=true
+MachineMetadata=role=node
