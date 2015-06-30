@@ -1,11 +1,14 @@
 [Unit]
 Description=Cube Evaluator
 After=docker.service
+After=flanneld.service
 After=mongodb.service
 Requires=docker.service
+Requires=flanneld.service
 Requires=mongodb.service
 
 [Service]
+Restart=always|on-failure
 TimeoutStartSec=0
 ExecStartPre=-/usr/bin/docker rm cube-evaluator
 ExecStartPre=/usr/bin/docker pull extendedmind/cube-evaluator:latest

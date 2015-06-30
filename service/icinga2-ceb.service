@@ -1,9 +1,12 @@
 [Unit]
 Description=Icinga2 Command Execution Bridge
 After=docker.service
+After=flanneld.service
 Requires=docker.service
+Requires=flanneld.service
 
 [Service]
+Restart=always|on-failure
 TimeoutStartSec=0
 ExecStartPre=-/usr/bin/docker kill icinga2-ceb
 ExecStartPre=-/usr/bin/docker rm -f icinga2-ceb

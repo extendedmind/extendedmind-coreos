@@ -1,11 +1,14 @@
 [Unit]
 Description=Cube Collector
 After=docker.service
+After=flanneld.service
 After=mongodb.service
 Requires=docker.service
+Requires=flanneld.service
 Requires=mongodb.service
 
 [Service]
+Restart=always|on-failure
 TimeoutStartSec=0
 ExecStartPre=-/usr/bin/docker rm cube-collector
 ExecStartPre=/usr/bin/docker pull extendedmind/cube-collector:latest
