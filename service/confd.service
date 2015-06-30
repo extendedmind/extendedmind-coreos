@@ -20,9 +20,9 @@ EnvironmentFile=/etc/metadata
 TimeoutStartSec=0
 ExecStartPre=-/usr/bin/docker rm confd
 ExecStartPre=/usr/bin/docker pull extendedmind/confd:latest
-ExecStart=/usr/bin/docker run -e HOST_ID=${HOST_ID} --name confd \
+ExecStart=/usr/bin/docker run -e HOST_ID=${HOST_ID} -e HOST_IP=${COREOS_PRIVATE_IPV4} --name confd \
 --volumes-from CONF-MONGODB --volumes-from CONF-BACKEND --volumes-from CONF-NGINX --volumes-from CONF-CUBE \
-extendedmind/confd:latest -node=http://${COREOS_PRIVATE_IPV4}:2379
+extendedmind/confd:latest -node=http://${COREOS_PRIVATE_IPV4}:2379 -watch=true
 
 [Install]
 WantedBy=multi-user.target

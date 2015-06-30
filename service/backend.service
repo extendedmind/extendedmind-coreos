@@ -14,7 +14,7 @@ TimeoutStartSec=0
 ExecStartPre=-/usr/bin/docker rm backend
 ExecStartPre=/usr/bin/docker pull extendedmind/backend:latest
 ExecStart=/usr/bin/docker run --name backend \
---volumes-from CONF-BACKEND --volumes-from DATA-BACKEND -p 1337:1337 -p 5001:5001 -p 6001:6001 -p 6362:6362 -p 8081:8081 \
+--volumes-from CONF-BACKEND --volumes-from DATA-BACKEND -p 6362:6362 -p 8081:8081 \
 extendedmind/backend:latest
 
 [Install]
