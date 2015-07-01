@@ -1,0 +1,19 @@
+[Unit]
+Description=Discover Available Nginx
+BindsTo=nginx.service
+After=nginx.service
+
+[Service]
+TimeoutStartSec=0
+TimeoutStopSec=0
+EnvironmentFile=/etc/environment
+EnvironmentFile=/etc/metadata
+ExecStart=/bin/bash -c "while true; do if [ $(curl --write-out %{http_code} --silent --output /dev/null localhost:8008/api/ha/available) = 200 ]; then etcdctl set /extendedmind/running/${COREOS_PRIVATE_IPV4} \"node${HOST_ID} ${COREOS_PRIVATE_IPV4}\" --ttl 20; else etcdctl rm /extendedmind/running/${COREOS_PRIVATE_IPV4} || true; fi; sleep 10; done;"
+ExecStop=/usr/bin/bash -c "until (( $(etcdctl ls /extendedmind/running | wc -l) > 2 )); do sleep 3; echo waiting for minimum three running machines before stopping...; done; etcdctl rm /extendedmind/running/${COREOS_PRIVATE_IPV4};"
+
+[Install]
+WantedBy=multi-user.target
+
+[X-Fleet]
+Global=true
+MachineMetadata=role=node
