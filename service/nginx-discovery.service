@@ -1,8 +1,19 @@
 [Unit]
 Description=Discover Available Nginx
+Requires=etcd2.service
+Requires=fleet.service
+Requires=flanneld.service
+Requires=icinga2-ceb.service
+Requires=backend-discovery.service
+Requires=backend-backup.service
 BindsTo=nginx.service
+After=etcd2.service
+After=fleet.service
+After=flanneld.service
+After=icinga2-ceb.service
+After=backend-discovery.service
+After=backend-backup.service
 After=nginx.service
-
 [Service]
 TimeoutStartSec=0
 TimeoutStopSec=0
