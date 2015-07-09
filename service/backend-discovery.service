@@ -6,10 +6,7 @@ After=backend.service
 [Service]
 TimeoutStartSec=0
 EnvironmentFile=/etc/environment
-# In ExecStart the dollar sign does not need to be escaped as Systemd does some escaping before executing,
-# but on the command line escaping is needed like this:
-#/bin/bash -c "until IP=\$(eval docker inspect -f '{{.NetworkSettings.IPAddress}}' backend) && [[ \"\$IP\" =~ ^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$ ]]; do sleep 1; echo failed to get container IP: \$IP; done; echo got container IP: \$IP;"
-ExecStart=/bin/bash -c "until IP=$(eval docker inspect -f '{{.NetworkSettings.IPAddress}}' backend) && [[ \"$IP\" =~ ^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$ ]]; do sleep 1; echo failed to get container IP: $IP; done; echo got container IP: $IP; while true; do etcdctl set /extendedmind/backend/hosts/${COREOS_PRIVATE_IPV4} \"$IP\" --ttl 60; sleep 45; done;"
+ExecStart=/bin/bash -c "until IP=$(eval docker inspect -f '{{.NetworkSettings.IPAddress}}' backend) && [[ \"$IP\" =~ ^[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}$ ]]; do sleep 1; echo failed to get container IP: $IP; done; echo got container IP: $IP; while true; do etcdctl set /extendedmind/backend/hosts/${COREOS_PRIVATE_IPV4} \"$IP\" --ttl 60; sleep 45; done;"
 ExecStop=/usr/bin/etcdctl rm /extendedmind/backend/hosts/${COREOS_PRIVATE_IPV4} || true
 
 [Install]
