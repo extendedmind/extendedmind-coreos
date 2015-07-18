@@ -12,4 +12,4 @@ WantedBy=multi-user.target
 
 [X-Fleet]
 Global=true
-MachineOf=tick-hourly.service
+MachineMetadata=role=node
