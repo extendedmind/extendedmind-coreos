@@ -1,16 +1,8 @@
 [Unit]
 Description=Extended Mind Hourly Tick
-BindsTo=backend.service
-After=backend.service
 
 [Service]
-TimeoutStartSec=0
-Type=simple
-RemainAfterExit=yes
 ExecStart=/bin/bash -c "IS_MASTER=$(curl --write-out %{http_code} --silent --output /dev/null http://localhost:8081/ha/master);if [ $IS_MASTER -eq 200 ]; then echo 'hourly tick to master node'; curl -d '{\"priority\":2}' -H 'Content-Type:application/json' --silent localhost:8081/tick; else echo 'not master, hourly tick skipped'; fi;"
-
-[Install]
-WantedBy=multi-user.target
 
 [X-Fleet]
 Global=true

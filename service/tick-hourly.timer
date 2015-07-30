@@ -1,5 +1,7 @@
 [Unit]
-Description=Timer for Extended Mind Hourly Ticks
+Description=Extended Mind Hourly Ticker
+BindsTo=backend.service
+After=backend.service
 
 [Timer]
 # Wait five minutes before launching the first tick to make sure everything is up and running
