@@ -51,3 +51,4 @@ write_files:
     content: |
       HOST_ID=1
       BUCKET_PATH=${bucket.path}
+      SLAVE_COUNT=2
