@@ -13,7 +13,7 @@ TimeoutStartSec=0
 ExecStartPre=-/usr/bin/docker rm cube-collector
 ExecStartPre=/usr/bin/docker pull extendedmind/cube-collector:latest
 ExecStart=/usr/bin/docker run --name cube-collector \
---volumes-from CONF-CUBE \
+--volumes-from cube-conf \
 extendedmind/cube-collector:latest
 
 [Install]

@@ -7,9 +7,9 @@ Requires=docker.service
 TimeoutStartSec=0
 Type=oneshot
 RemainAfterExit=true
-ExecStartPre=-/usr/bin/docker rm CONF-MONGODB
+ExecStartPre=-/usr/bin/docker rm mongodb-conf
 ExecStartPre=/usr/bin/docker pull extendedmind/mongodb-conf:latest
-ExecStart=/usr/bin/docker create --name CONF-MONGODB extendedmind/mongodb-conf:latest
+ExecStart=/usr/bin/docker create --name mongodb-conf extendedmind/mongodb-conf:latest
 
 [Install]
 WantedBy=multi-user.target

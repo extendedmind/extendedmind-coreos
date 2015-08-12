@@ -7,9 +7,9 @@ Requires=docker.service
 TimeoutStartSec=0
 Type=oneshot
 RemainAfterExit=true
-ExecStartPre=-/usr/bin/docker rm CONF-BACKEND
+ExecStartPre=-/usr/bin/docker rm backend-conf
 ExecStartPre=/usr/bin/docker pull extendedmind/backend-conf:latest
-ExecStart=/usr/bin/docker create --name CONF-BACKEND extendedmind/backend-conf:latest
+ExecStart=/usr/bin/docker create --name backend-conf extendedmind/backend-conf:latest
 
 [Install]
 WantedBy=multi-user.target
