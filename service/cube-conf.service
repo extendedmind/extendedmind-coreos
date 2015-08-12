@@ -8,7 +8,7 @@ TimeoutStartSec=0
 Type=oneshot
 RemainAfterExit=true
 ExecStartPre=-/usr/bin/docker rm cube-conf
-ExecStartPre=/usr/bin/docker pull extendedmind/cube-conf:latest
+ExecStartPre=-/usr/bin/flock /var/lock /usr/bin/timeout 5m /usr/bin/docker pull extendedmind/cube-conf:latest
 ExecStart=/usr/bin/docker create --name cube-conf extendedmind/cube-conf:latest
 
 [Install]

@@ -19,7 +19,7 @@ EnvironmentFile=/etc/environment
 EnvironmentFile=/etc/metadata
 TimeoutStartSec=0
 ExecStartPre=-/usr/bin/docker rm confd
-ExecStartPre=/usr/bin/docker pull extendedmind/confd:latest
+ExecStartPre=-/usr/bin/flock /var/lock /usr/bin/timeout 5m /usr/bin/docker pull extendedmind/confd:latest
 ExecStart=/usr/bin/docker run -e HOST_ID=${HOST_ID} -e HOST_IP=${COREOS_PRIVATE_IPV4} -e SLAVE_COUNT=${SLAVE_COUNT} --name confd \
 --volumes-from mongodb-conf --volumes-from backend-conf --volumes-from nginx-conf --volumes-from cube-conf --volumes-from site-conf \
 extendedmind/confd:latest -node=http://${COREOS_PRIVATE_IPV4}:2379 -watch=true

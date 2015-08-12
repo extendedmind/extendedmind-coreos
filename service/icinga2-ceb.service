@@ -10,7 +10,7 @@ Restart=on-failure
 TimeoutStartSec=0
 ExecStartPre=-/usr/bin/docker kill icinga2-ceb
 ExecStartPre=-/usr/bin/docker rm -f icinga2-ceb
-ExecStartPre=/usr/bin/docker pull extendedmind/icinga2-ceb:latest
+ExecStartPre=-/usr/bin/flock /var/lock /usr/bin/timeout 5m /usr/bin/docker pull extendedmind/icinga2-ceb:latest
 ExecStart=/usr/bin/docker run --privileged -p 5665:5665 --name icinga2-ceb --volumes-from DATA-ICINGA2 extendedmind/icinga2-ceb:latest
 
 [Install]

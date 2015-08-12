@@ -12,7 +12,7 @@ Restart=on-failure
 EnvironmentFile=/etc/environment
 TimeoutStartSec=0
 ExecStartPre=-/usr/bin/docker rm backend
-ExecStartPre=/usr/bin/docker pull extendedmind/backend:latest
+ExecStartPre=-/usr/bin/flock /var/lock /usr/bin/timeout 5m /usr/bin/docker pull extendedmind/backend:latest
 ExecStart=/usr/bin/docker run --name backend \
 --volumes-from backend-conf --volumes-from DATA-BACKEND -p 6362:6362 -p 8081:8081 \
 extendedmind/backend:latest

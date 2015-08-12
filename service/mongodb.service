@@ -11,7 +11,7 @@ Requires=confd.service
 Restart=on-failure
 TimeoutStartSec=0
 ExecStartPre=-/usr/bin/docker rm mongodb
-ExecStartPre=/usr/bin/docker pull extendedmind/mongodb:latest
+ExecStartPre=-/usr/bin/flock /var/lock /usr/bin/timeout 5m /usr/bin/docker pull extendedmind/mongodb:latest
 ExecStart=/usr/bin/docker run --name mongodb \
 --volumes-from mongodb-conf --volumes-from DATA-MONGODB -p 27017:27017 \
 extendedmind/mongodb:latest

@@ -10,7 +10,7 @@ TimeoutStartSec=0
 Type=oneshot
 RemainAfterExit=true
 ExecStartPre=-/usr/bin/docker rm frontend
-ExecStartPre=/usr/bin/docker pull extendedmind/frontend:latest
+ExecStartPre=-/usr/bin/flock /var/lock /usr/bin/timeout 5m /usr/bin/docker pull extendedmind/frontend:latest
 ExecStart=/usr/bin/docker run --name frontend --volumes-from DATA-FRONTEND extendedmind/frontend:latest
 
 [Install]

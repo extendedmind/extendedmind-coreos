@@ -11,7 +11,7 @@ Requires=mongodb.service
 Restart=on-failure
 TimeoutStartSec=0
 ExecStartPre=-/usr/bin/docker rm cube-evaluator
-ExecStartPre=/usr/bin/docker pull extendedmind/cube-evaluator:latest
+ExecStartPre=-/usr/bin/flock /var/lock /usr/bin/timeout 5m /usr/bin/docker pull extendedmind/cube-evaluator:latest
 ExecStart=/usr/bin/docker run --name cube-evaluator \
 --volumes-from cube-conf \
 extendedmind/cube-evaluator:latest

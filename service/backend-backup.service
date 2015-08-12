@@ -12,7 +12,7 @@ EnvironmentFile=/etc/metadata
 Restart=on-failure
 TimeoutStartSec=0
 ExecStartPre=-/usr/bin/docker rm backend-backup
-ExecStartPre=/usr/bin/docker pull extendedmind/backend-backup:latest
+ExecStartPre=-/usr/bin/flock /var/lock /usr/bin/timeout 5m /usr/bin/docker pull extendedmind/backend-backup:latest
 ExecStart=/usr/bin/docker run --name backend-backup \
 --link backend:backend \
 extendedmind/backend-backup:latest ${BACKUP_BUCKET_PATH} gsutil

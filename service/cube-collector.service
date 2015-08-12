@@ -11,7 +11,7 @@ Requires=mongodb.service
 Restart=on-failure
 TimeoutStartSec=0
 ExecStartPre=-/usr/bin/docker rm cube-collector
-ExecStartPre=/usr/bin/docker pull extendedmind/cube-collector:latest
+ExecStartPre=-/usr/bin/flock /var/lock /usr/bin/timeout 5m /usr/bin/docker pull extendedmind/cube-collector:latest
 ExecStart=/usr/bin/docker run --name cube-collector \
 --volumes-from cube-conf \
 extendedmind/cube-collector:latest

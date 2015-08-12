@@ -6,20 +6,18 @@ After=confd.service
 After=backend.service
 After=cube-evaluator.service
 After=cube-collector.service
-After=frontend.service
 Requires=docker.service
 Requires=flanneld.service
 Requires=confd.service
 Requires=backend.service
 Requires=cube-evaluator.service
 Requires=cube-collector.service
-Requires=frontend.service
 
 [Service]
 Restart=on-failure
 TimeoutStartSec=0
 ExecStartPre=-/usr/bin/docker rm nginx
-ExecStartPre=/usr/bin/docker pull extendedmind/nginx:latest
+ExecStartPre=-/usr/bin/flock /var/lock /usr/bin/timeout 5m /usr/bin/docker pull extendedmind/nginx:latest
 ExecStartPre=/usr/bin/bash -c "if [[ -n $(/usr/bin/etcdctl ls /extendedmind | grep nginxextra) ]]; then /usr/bin/systemctl set-environment NGINX_EXTRA=''; else /usr/bin/systemctl set-environment NGINX_EXTRA=$(/usr/bin/etcdctl get /extendedmind/nginxextra);"
 ExecStart=/usr/bin/docker run --name nginx \
 --volumes-from nginx-conf --volumes-from DATA-FRONTEND \

@@ -1,0 +1,25 @@
+[Unit]
+Description=Extended Mind MongoDB Backup
+After=docker.service
+After=flanneld.service
+After=mongodb.service
+Requires=docker.service
+Requires=flanneld.service
+Requires=mongodb.service
+
+[Service]
+EnvironmentFile=/etc/metadata
+Restart=on-failure
+TimeoutStartSec=0
+ExecStartPre=-/usr/bin/docker rm mongodb-backup
+ExecStartPre=-/usr/bin/flock /var/lock /usr/bin/timeout 5m /usr/bin/docker pull extendedmind/mongodb-backup:latest
+ExecStart=/usr/bin/docker run --name mongodb-backup \
+--link mongodb:mongodb \
+extendedmind/mongodb-backup:latest ${BACKUP_BUCKET_PATH} gsutil
+
+[Install]
+WantedBy=multi-user.target
+
+[X-Fleet]
+Global=true
+MachineMetadata=role=node
