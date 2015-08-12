@@ -1,0 +1,25 @@
+[Unit]
+Description=Extended Mind Sync Folder Service
+After=docker.service
+After=flanneld.service
+After=nginx.service
+Requires=docker.service
+Requires=flanneld.service
+Requires=nginx.service
+
+[Service]
+EnvironmentFile=/etc/metadata
+Restart=on-failure
+TimeoutStartSec=0
+ExecStartPre=-/usr/bin/docker rm sync-folder
+ExecStartPre=-/usr/bin/flock /var/lock /usr/bin/timeout 5m /usr/bin/docker pull extendedmind/sync-folder:latest
+ExecStart=/usr/bin/docker run --name sync-folder \
+--volumes-from DATA-FRONTEND \
+extendedmind/sync-folder:latest ${FILES_BUCKET_PATH} /var/www/extendedmind/files gsutil
+
+[Install]
+WantedBy=multi-user.target
+
+[X-Fleet]
+Global=true
+MachineMetadata=role=node
