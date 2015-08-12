@@ -1,7 +1,9 @@
 [Unit]
 Description=Extended Mind Backend Configuration Templates
 After=docker.service
+After=flanneld.service
 Requires=docker.service
+Requires=flanneld.service
 
 [Service]
 TimeoutStartSec=0
