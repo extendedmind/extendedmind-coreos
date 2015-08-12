@@ -50,6 +50,7 @@ write_files:
     owner: core
     content: |
       HOST_ID=3
-      BUCKET_PATH=${bucket.path}
+      BACKUP_BUCKET_PATH=${backup.bucket.path}
+      FILES_BUCKET_PATH=${files.bucket.path}
       SLAVE_COUNT=2
 

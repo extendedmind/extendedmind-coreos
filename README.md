@@ -11,7 +11,7 @@ https://discovery.etcd.io/new?size=3
 where the random last 32 characters of the generated URL is YOUR_TOKEN you can use in the build:
 
 ```
-mvn clean generate-resources -Detcd.token=YOUR_TOKEN -Dstorage.id.prefix="google-node" -Dstorage.id.postfix="-data"
+mvn clean generate-resources -Detcd.token=YOUR_TOKEN -Dstorage.id.prefix="google-node" -Dstorage.id.postfix="-data" -Dbackup.bucket.path="YOUR_BACKUP_BUCKET" -Dfiles.bucket.path="YOUR_FILES_BUCKET"
 ```
 
 For node X (where X is either 1, 2 or 3), create a GCE instance with (using pre-created persistent disks "nodeX-data" for storing Docker data):

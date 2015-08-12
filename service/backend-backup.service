@@ -15,7 +15,7 @@ ExecStartPre=-/usr/bin/docker rm backend-backup
 ExecStartPre=/usr/bin/docker pull extendedmind/backend-backup:latest
 ExecStart=/usr/bin/docker run --name backend-backup \
 --link backend:backend \
-extendedmind/backend-backup:latest ${BUCKET_PATH} gsutil
+extendedmind/backend-backup:latest ${BACKUP_BUCKET_PATH} gsutil
 
 [Install]
 WantedBy=multi-user.target
