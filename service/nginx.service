@@ -1,5 +1,6 @@
 [Unit]
 Description=Nginx
+After=etcd2.service
 After=docker.service
 After=flanneld.service
 After=confd.service
@@ -7,6 +8,7 @@ After=backend.service
 After=cube-evaluator.service
 After=cube-collector.service
 After=site.service
+Requires=etcd2.service
 Requires=docker.service
 Requires=flanneld.service
 Requires=confd.service
