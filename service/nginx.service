@@ -6,12 +6,14 @@ After=confd.service
 After=backend.service
 After=cube-evaluator.service
 After=cube-collector.service
+After=site.service
 Requires=docker.service
 Requires=flanneld.service
 Requires=confd.service
 Requires=backend.service
 Requires=cube-evaluator.service
 Requires=cube-collector.service
+Requires=site.service
 
 [Service]
 Restart=on-failure
@@ -22,7 +24,7 @@ ExecStartPre=/usr/bin/bash -c "if [[ -n $(/usr/bin/etcdctl ls /extendedmind | gr
 ExecStart=/usr/bin/docker run --name nginx \
 --volumes-from nginx-conf --volumes-from DATA-FRONTEND \
 --link backend:backend --link cube-evaluator:evaluator --link cube-collector:collector --link site:site ${NGINX_EXTRA} \
--p 591:591 -p 8008:8008 \
+-p 8008:8008 \
 extendedmind/nginx:latest
 
 [Install]

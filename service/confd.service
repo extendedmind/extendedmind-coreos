@@ -6,12 +6,14 @@ After=mongodb-conf.service
 After=backend-conf.service
 After=nginx-conf.service
 After=cube-conf.service
+After=site-conf.service
 Requires=docker.service
 Requires=flanneld.service
 Requires=mongodb-conf.service
 Requires=backend-conf.service
 Requires=nginx-conf.service
 Requires=cube-conf.service
+Requires=site-conf.service
 
 [Service]
 Restart=on-failure

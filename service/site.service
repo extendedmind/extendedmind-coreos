@@ -1,0 +1,24 @@
+[Unit]
+Description=Extended Mind Site
+After=docker.service
+After=flanneld.service
+After=confd.service
+Requires=docker.service
+Requires=flanneld.service
+Requires=confd.service
+
+[Service]
+Restart=on-failure
+TimeoutStartSec=0
+ExecStartPre=-/usr/bin/docker rm site
+ExecStartPre=-/usr/bin/flock /var/lock /usr/bin/timeout 5m /usr/bin/docker pull extendedmind/site:latest
+ExecStart=/usr/bin/docker run --name site \
+--volumes-from site-conf \
+extendedmind/site:latest
+
+[Install]
+WantedBy=multi-user.target
+
+[X-Fleet]
+Global=true
+MachineMetadata=role=node
