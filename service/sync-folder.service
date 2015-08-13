@@ -2,10 +2,8 @@
 Description=Extended Mind Sync Folder Service
 After=docker.service
 After=flanneld.service
-After=nginx.service
 Requires=docker.service
 Requires=flanneld.service
-Requires=nginx.service
 
 [Service]
 EnvironmentFile=/etc/metadata
