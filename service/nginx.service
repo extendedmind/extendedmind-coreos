@@ -20,10 +20,9 @@ Restart=on-failure
 TimeoutStartSec=0
 ExecStartPre=-/usr/bin/docker rm nginx
 ExecStartPre=-/usr/bin/flock /var/lock /usr/bin/timeout 5m /usr/bin/docker pull extendedmind/nginx:latest
-ExecStartPre=/usr/bin/bash -c "if [[ -n $(/usr/bin/etcdctl ls /extendedmind | grep nginxextra) ]]; then /usr/bin/systemctl set-environment NGINX_EXTRA=''; else /usr/bin/systemctl set-environment NGINX_EXTRA=$(/usr/bin/etcdctl get /extendedmind/nginxextra);"
 ExecStart=/usr/bin/docker run --name nginx \
 --volumes-from nginx-conf --volumes-from DATA-FRONTEND \
---link backend:backend --link cube-evaluator:evaluator --link cube-collector:collector --link site:site ${NGINX_EXTRA} \
+--link backend:backend --link cube-evaluator:evaluator --link cube-collector:collector --link site:site --link fiak-site:site2 -p 8009:8009 \
 -p 8008:8008 \
 extendedmind/nginx:latest
 
