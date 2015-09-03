@@ -53,4 +53,8 @@ write_files:
       BACKUP_BUCKET_PATH=${backup.bucket.path}
       FILES_BUCKET_PATH=${files.bucket.path}
       SLAVE_COUNT=2
-
+  - path: /etc/profile.d/aliases.sh
+    permissions: 0644
+    owner: core
+    content: |
+      alias cleanreboot='docker rmi $(docker images --quiet --filter "dangling=true") ; sudo systemctl reboot'
