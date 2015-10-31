@@ -33,6 +33,10 @@
     </developer>
   </developers>
 
+  <properties>
+    <flannel.backend>udp</flannel.backend>
+  </properties>
+
   <build>
     <plugins>
       <plugin>
