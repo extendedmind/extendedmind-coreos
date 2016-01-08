@@ -1,0 +1,9 @@
+[Unit]
+Description=Extended Mind Daily Tick
+
+[Service]
+ExecStart=/bin/bash -c "IS_MASTER=$(curl --write-out %{http_code} --silent --output /dev/null http://localhost:8081/ha/master);if [ $IS_MASTER -eq 200 ]; then echo 'daily tick to master node'; curl -d '{\"priority\":3}' -H 'Content-Type:application/json' --silent localhost:8081/tick; else echo 'not master, hourly tick skipped'; fi;"
+
+[X-Fleet]
+Global=true
+MachineMetadata=role=node

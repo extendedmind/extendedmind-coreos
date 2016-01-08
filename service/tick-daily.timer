@@ -1,0 +1,17 @@
+[Unit]
+Description=Extended Mind Daily Ticker
+BindsTo=backend.service
+After=backend.service
+
+[Timer]
+# Run on midnight UTC, but wait 5 minutes from boot to make sure backend is up and running
+OnBootSec=5min
+OnCalendar=daily UTC
+Unit=tick-daily.service
+
+[Install]
+WantedBy=multi-user.target
+
+[X-Fleet]
+Global=true
+MachineMetadata=role=node
