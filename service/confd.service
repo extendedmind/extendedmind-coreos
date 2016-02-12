@@ -15,11 +15,6 @@ Requires=nginx-conf.service
 Requires=cube-conf.service
 Requires=site-conf.service
 
-# HACK: These were not supposed to be required, but without these, fiak-site-conf.service which is Before=confd.service
-#       fails for some reason every now and then on reboot.
-After=fiak-site-conf.service
-Requires=fiak-site-conf.service
-
 [Service]
 Restart=on-failure
 EnvironmentFile=/etc/environment
