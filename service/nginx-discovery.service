@@ -9,6 +9,7 @@ Requires=backend-backup.service
 Requires=mongodb-backup.service
 Requires=sync-folder.service
 BindsTo=nginx.service
+Wants=locksmithd.service
 After=etcd2.service
 After=fleet.service
 After=flanneld.service
@@ -18,6 +19,7 @@ After=backend-backup.service
 After=mongodb-backup.service
 After=sync-folder.service
 After=nginx.service
+Before=locksmithd.service
 
 [Service]
 TimeoutStartSec=0
