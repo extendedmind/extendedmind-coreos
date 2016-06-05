@@ -5,17 +5,15 @@ After=docker.service
 After=flanneld.service
 After=confd.service
 After=backend.service
-After=cube-evaluator.service
-After=cube-collector.service
 After=site.service
+After=piwik.service
 Requires=etcd2.service
 Requires=docker.service
 Requires=flanneld.service
 Requires=confd.service
 Requires=backend.service
-Requires=cube-evaluator.service
-Requires=cube-collector.service
 Requires=site.service
+Requires=piwik.service
 
 [Service]
 Restart=on-failure
@@ -27,8 +25,8 @@ ExecStartPre=-/usr/bin/flock /var/lock /usr/bin/timeout 5m /usr/bin/docker pull 
 # then /usr/bin/systemctl set-environment NGINX_EXTRA=\"\";
 # else /usr/bin/systemctl set-environment NGINX_EXTRA=\"$(/usr/bin/etcdctl get /extendedmind/nginxextra)\"; fi;"
 ExecStart=/usr/bin/docker run --name nginx \
---volumes-from nginx-conf --volumes-from DATA-FRONTEND \
---link backend:backend --link cube-evaluator:evaluator --link cube-collector:collector --link site:site \
+--volumes-from nginx-conf --volumes-from DATA-FRONTEND --volumes-from piwik \
+--link backend:backend --link site:site --link piwik:piwik \
 --link fiak-site:site2 -p 8009:8009 \
 -p 8008:8008 \
 extendedmind/nginx:latest
