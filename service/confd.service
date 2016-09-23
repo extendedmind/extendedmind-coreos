@@ -1,19 +1,7 @@
 [Unit]
 Description=Confd
-After=docker.service
-After=flanneld.service
-After=mariadb-conf.service
-After=backend-conf.service
-After=nginx-conf.service
-After=piwik-conf.service
-After=site-conf.service
-Requires=docker.service
-Requires=flanneld.service
-Requires=mariadb-conf.service
-Requires=backend-conf.service
-Requires=nginx-conf.service
-Requires=piwik-conf.service
-Requires=site-conf.service
+After=docker.service flanneld.service backend-conf.service nginx-conf.service site-conf.service ${extra.confd.dependencies}
+Requires=docker.service flanneld.service backend-conf.service nginx-conf.service site-conf.service ${extra.confd.dependencies}
 
 [Service]
 Restart=on-failure
@@ -23,7 +11,7 @@ TimeoutStartSec=0
 ExecStartPre=-/usr/bin/docker rm confd
 ExecStartPre=-/usr/bin/flock /var/lock /usr/bin/timeout 5m /usr/bin/docker pull extendedmind/confd:latest
 ExecStart=/usr/bin/docker run -e HOST_ID=${HOST_ID} -e HOST_IP=${COREOS_PRIVATE_IPV4} -e SLAVE_COUNT=${SLAVE_COUNT} --name confd \
---volumes-from mariadb-conf --volumes-from backend-conf --volumes-from nginx-conf --volumes-from piwik-conf --volumes-from site-conf \
+--volumes-from backend-conf --volumes-from nginx-conf --volumes-from site-conf ${extra.confd.run} \
 extendedmind/confd:latest -node=http://${COREOS_PRIVATE_IPV4}:2379 -watch=true
 
 [Install]

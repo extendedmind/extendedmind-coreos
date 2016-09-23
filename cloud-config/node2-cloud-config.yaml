@@ -53,7 +53,7 @@ write_files:
       BACKUP_BUCKET_PATH=${backup.bucket.path}
       FILES_BUCKET_PATH=${files.bucket.path}
       SLAVE_COUNT=2
-      MARIADB_ROOT_PWD=${mariadb.root.pwd}
+      ${extra.metadata}
   - path: /etc/profile.d/aliases.sh
     permissions: 0644
     owner: core

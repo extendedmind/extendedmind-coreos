@@ -1,13 +1,7 @@
 [Unit]
 Description=Extended Mind Site
-After=docker.service
-After=flanneld.service
-After=confd.service
-After=mariadb.service
-Requires=docker.service
-Requires=flanneld.service
-Requires=confd.service
-Requires=mariadb.service
+After=docker.service flanneld.service confd.service ${extra.site.dependencies}
+Requires=docker.service flanneld.service confd.service ${extra.site.dependencies}
 
 [Service]
 Restart=on-failure
@@ -16,7 +10,7 @@ ExecStartPre=-/usr/bin/docker rm site
 ExecStartPre=-/usr/bin/flock /var/lock /usr/bin/timeout 5m /usr/bin/docker pull extendedmind/site:latest
 ExecStart=/usr/bin/docker run --name site \
 --volumes-from site-conf \
---link backend:backend --link mariadb:mariadb \
+--link backend:backend ${extra.site.run} \
 extendedmind/site:latest
 
 [Install]

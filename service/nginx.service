@@ -1,34 +1,17 @@
 [Unit]
 Description=Nginx
-After=etcd2.service
-After=docker.service
-After=flanneld.service
-After=confd.service
-After=backend.service
-After=site.service
-After=piwik.service
-Requires=etcd2.service
-Requires=docker.service
-Requires=flanneld.service
-Requires=confd.service
-Requires=backend.service
-Requires=site.service
-Requires=piwik.service
+After=etcd2.service docker.service flanneld.service confd.service backend.service site.service ${extra.nginx.dependencies}
+Requires=etcd2.service docker.service flanneld.service confd.service backend.service site.service ${extra.nginx.dependencies}
 
 [Service]
 Restart=on-failure
 TimeoutStartSec=0
 ExecStartPre=-/usr/bin/docker rm nginx
 ExecStartPre=-/usr/bin/flock /var/lock /usr/bin/timeout 5m /usr/bin/docker pull extendedmind/nginx:latest
-# This should have worked, but does not for some weird reason:
-# ExecStartPre=-/bin/bash -c "if [ -z $(/usr/bin/etcdctl ls /extendedmind | grep nginxextra) ];
-# then /usr/bin/systemctl set-environment NGINX_EXTRA=\"\";
-# else /usr/bin/systemctl set-environment NGINX_EXTRA=\"$(/usr/bin/etcdctl get /extendedmind/nginxextra)\"; fi;"
 ExecStart=/usr/bin/docker run --name nginx \
---volumes-from nginx-conf --volumes-from DATA-FRONTEND --volumes-from piwik \
---link backend:backend --link site:site --link piwik:piwik \
---link fiak-site:site2 -p 8009:8009 \
--p 8008:8008 \
+--volumes-from nginx-conf --volumes-from DATA-FRONTEND \
+--link backend:backend --link site:site  \
+-p 8008:8008 ${extra.nginx.run} \
 extendedmind/nginx:latest
 
 [Install]
