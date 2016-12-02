@@ -2,7 +2,7 @@
 Description=Extended Mind Hourly Tick
 
 [Service]
-ExecStart=/bin/bash -c "IS_MASTER=$(curl --write-out %{http_code} --silent --output /dev/null http://localhost:8081/ha/master);if [ $IS_MASTER -eq 200 ]; then echo 'hourly tick to master node'; curl -d '{\"priority\":2}' -H 'Content-Type:application/json' --silent localhost:8081/tick; else echo 'not master, hourly tick skipped'; fi;"
+ExecStart=/bin/bash -c "IS_MASTER=$(curl --write-out %{http_code} --silent --output /dev/null http://localhost:8081/v2/ha/master);if [ $IS_MASTER -eq 200 ]; then echo 'hourly tick to master node'; curl -d '{\"priority\":2}' -H 'Content-Type:application/json' --silent localhost:8081/v2/tick; else echo 'not master, hourly tick skipped'; fi;"
 
 [X-Fleet]
 Global=true
